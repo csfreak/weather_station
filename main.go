@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/csfreak/weather_station/weather_station/weather"
+	"github.com/csfreak/weather_station/weather"
 )
 
 func main() {
@@ -20,12 +20,16 @@ func main() {
 }
 
 func ecowittHandler(res http.ResponseWriter, req *http.Request) {
-	if !(req.Method == "POST") {
-		res.WriteHeader(405)
+	if !(req.Method == http.MethodPost) {
+		res.WriteHeader(http.StatusMethodNotAllowed)
 	} else {
 		req.ParseForm()
 		fmt.Println(req.PostForm)
-		w := weather.FromEcowitt(req.PostForm)
+		w, err := weather.FromEcowitt(req.PostForm)
+		if err != nil {
+			res.WriteHeader(http.StatusInternalServerError)
+		}
 		fmt.Println(w)
+		res.WriteHeader(http.StatusOK)
 	}
 }
