@@ -8,15 +8,14 @@ import (
 )
 
 func main() {
-	mux := http.NewServeMux()
-	mux.HandleFunc("/v1/ecowitt", ecowittHandler)
-	mux.HandleFunc("/v1/ecowitt/", ecowittHandler)
+	fmt.Println("Staring main func")
+	http.HandleFunc("/v1/ecowitt", ecowittHandler)
+	http.HandleFunc("/v1/ecowitt/", ecowittHandler)
 
-	s := &http.Server{
-		Addr:    ":8080",
-		Handler: mux,
-	}
-	s.ListenAndServe()
+	fmt.Println("Starting HTTP Server")
+	err := http.ListenAndServe(":8080", nil)
+	fmt.Println(err)
+	fmt.Println("After HTTP Server")
 }
 
 func ecowittHandler(res http.ResponseWriter, req *http.Request) {
@@ -28,8 +27,10 @@ func ecowittHandler(res http.ResponseWriter, req *http.Request) {
 		w, err := weather.FromEcowitt(req.PostForm)
 		if err != nil {
 			res.WriteHeader(http.StatusInternalServerError)
+			fmt.Println(err)
+		} else {
+			fmt.Println(w)
+			res.WriteHeader(http.StatusOK)
 		}
-		fmt.Println(w)
-		res.WriteHeader(http.StatusOK)
 	}
 }

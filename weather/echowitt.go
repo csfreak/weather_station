@@ -45,17 +45,17 @@ func FromEcowitt(d url.Values) (*Weather, error) {
 	}
 	w.OutdoorHumidity = float32(humid)
 
-	winds, err := strconv.ParseInt(d.Get("windspeedmph"), 10, 8)
+	winds, err := strconv.ParseFloat(d.Get("windspeedmph"), 32)
 	if err != nil {
 		return nil, err
 	}
-	w.WindspeedMPH = uint8(winds)
+	w.WindspeedMPH = float32(winds)
 
-	windg, err := strconv.ParseInt(d.Get("windgustmph"), 10, 8)
+	windg, err := strconv.ParseFloat(d.Get("windgustmph"), 32)
 	if err != nil {
 		return nil, err
 	}
-	w.WindGustMPH = uint8(windg)
+	w.WindGustMPH = float32(windg)
 
 	windd, err := strconv.ParseInt(d.Get("winddir"), 10, 16)
 	if err != nil {

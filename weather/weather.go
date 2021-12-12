@@ -12,8 +12,8 @@ type Weather struct {
 	IndoorHumidity      float32
 	OutdoorTempF        float32
 	OutdoorHumidity     float32
-	WindspeedMPH        uint8
-	WindGustMPH         uint8
+	WindspeedMPH        float32
+	WindGustMPH         float32
 	WindDirectionDegree uint16
 	RainRateInch        float32
 }
