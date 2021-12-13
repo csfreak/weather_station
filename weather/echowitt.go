@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-const timeformat = "2006-01-02 03:04:05"
+const timeformat = "2006-01-02 15:04:05"
 
 func FromEcowitt(d url.Values) (*Weather, error) {
 	w := &Weather{
@@ -25,37 +25,37 @@ func FromEcowitt(d url.Values) (*Weather, error) {
 	if err != nil {
 		return nil, err
 	}
-	w.IndoorTempF = float32(tempin)
+	w.IndoorTempF = tempin
 
 	temp, err := strconv.ParseFloat(d.Get("tempf"), 32)
 	if err != nil {
 		return nil, err
 	}
-	w.OutdoorTempF = float32(temp)
+	w.OutdoorTempF = temp
 
 	humidin, err := strconv.ParseFloat(d.Get("humidityin"), 32)
 	if err != nil {
 		return nil, err
 	}
-	w.IndoorHumidity = float32(humidin)
+	w.IndoorHumidity = humidin
 
 	humid, err := strconv.ParseFloat(d.Get("humidity"), 32)
 	if err != nil {
 		return nil, err
 	}
-	w.OutdoorHumidity = float32(humid)
+	w.OutdoorHumidity = humid
 
 	winds, err := strconv.ParseFloat(d.Get("windspeedmph"), 32)
 	if err != nil {
 		return nil, err
 	}
-	w.WindspeedMPH = float32(winds)
+	w.WindspeedMPH = winds
 
 	windg, err := strconv.ParseFloat(d.Get("windgustmph"), 32)
 	if err != nil {
 		return nil, err
 	}
-	w.WindGustMPH = float32(windg)
+	w.WindGustMPH = windg
 
 	windd, err := strconv.ParseInt(d.Get("winddir"), 10, 16)
 	if err != nil {
@@ -67,7 +67,19 @@ func FromEcowitt(d url.Values) (*Weather, error) {
 	if err != nil {
 		return nil, err
 	}
-	w.RainRateInch = float32(rain)
+	w.RainRateInch = rain
+
+	apressure, err := strconv.ParseFloat(d.Get("baromabsin"), 32)
+	if err != nil {
+		return nil, err
+	}
+	w.BarometricPressureABSIn = apressure
+
+	rpressure, err := strconv.ParseFloat(d.Get("baromrelin"), 32)
+	if err != nil {
+		return nil, err
+	}
+	w.BarometricPressureRelIn = rpressure
 
 	return w, nil
 }

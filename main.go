@@ -1,19 +1,26 @@
 package main
 
 import (
-	"fmt"
-	"github.com/csfreak/weather_station/weather"
 	"log"
 	"net/http"
+
+	"github.com/csfreak/weather_station/weather"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 var apiListenerPort = ":8080"
 
 func main() {
+	weather.MetricInit()
+
 	http.HandleFunc("/v1/ecowitt", ecowittHandler)
 	http.HandleFunc("/v1/ecowitt/", ecowittHandler)
 
-	fmt.Println("Starting HTTP Server on", apiListenerPort)
+	http.Handle("/metrics", promhttp.Handler())
+
+	log.Printf("Starting HTTP Server on %s", apiListenerPort)
+
+	//Log and Exit if http server exits
 	log.Fatal(http.ListenAndServe(apiListenerPort, nil))
 }
 
@@ -23,16 +30,15 @@ func ecowittHandler(res http.ResponseWriter, req *http.Request) {
 	} else {
 		parseErr := req.ParseForm()
 		if parseErr != nil {
-			fmt.Println(parseErr)
+			log.Println(parseErr)
 			return
 		}
-		fmt.Println(req.PostForm)
 		w, err := weather.FromEcowitt(req.PostForm)
 		if err != nil {
 			res.WriteHeader(http.StatusInternalServerError)
-			fmt.Println(err)
+			log.Println(err)
 		} else {
-			fmt.Println(w)
+			weather.UpdateMetrics(w)
 			res.WriteHeader(http.StatusOK)
 		}
 	}
