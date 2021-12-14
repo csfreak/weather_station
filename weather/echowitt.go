@@ -21,37 +21,37 @@ func FromEcowitt(d url.Values) (*Weather, error) {
 	}
 	w.Timestamp = timeParse
 
-	tempin, err := strconv.ParseFloat(d.Get("tempinf"), 32)
+	tempin, err := strconv.ParseFloat(d.Get("tempinf"), 64)
 	if err != nil {
 		return nil, err
 	}
 	w.IndoorTempF = tempin
 
-	temp, err := strconv.ParseFloat(d.Get("tempf"), 32)
+	temp, err := strconv.ParseFloat(d.Get("tempf"), 64)
 	if err != nil {
 		return nil, err
 	}
 	w.OutdoorTempF = temp
 
-	humidin, err := strconv.ParseFloat(d.Get("humidityin"), 32)
+	humidin, err := strconv.ParseFloat(d.Get("humidityin"), 64)
 	if err != nil {
 		return nil, err
 	}
 	w.IndoorHumidity = humidin
 
-	humid, err := strconv.ParseFloat(d.Get("humidity"), 32)
+	humid, err := strconv.ParseFloat(d.Get("humidity"), 64)
 	if err != nil {
 		return nil, err
 	}
 	w.OutdoorHumidity = humid
 
-	winds, err := strconv.ParseFloat(d.Get("windspeedmph"), 32)
+	winds, err := strconv.ParseFloat(d.Get("windspeedmph"), 64)
 	if err != nil {
 		return nil, err
 	}
 	w.WindspeedMPH = winds
 
-	windg, err := strconv.ParseFloat(d.Get("windgustmph"), 32)
+	windg, err := strconv.ParseFloat(d.Get("windgustmph"), 64)
 	if err != nil {
 		return nil, err
 	}
@@ -63,19 +63,19 @@ func FromEcowitt(d url.Values) (*Weather, error) {
 	}
 	w.WindDirectionDegree = uint16(windd)
 
-	rain, err := strconv.ParseFloat(d.Get("rainratein"), 32)
+	rain, err := strconv.ParseFloat(d.Get("rainratein"), 64)
 	if err != nil {
 		return nil, err
 	}
 	w.RainRateInch = rain
 
-	apressure, err := strconv.ParseFloat(d.Get("baromabsin"), 32)
+	apressure, err := strconv.ParseFloat(d.Get("baromabsin"), 64)
 	if err != nil {
 		return nil, err
 	}
 	w.BarometricPressureABSIn = apressure
 
-	rpressure, err := strconv.ParseFloat(d.Get("baromrelin"), 32)
+	rpressure, err := strconv.ParseFloat(d.Get("baromrelin"), 64)
 	if err != nil {
 		return nil, err
 	}
