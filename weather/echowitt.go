@@ -15,11 +15,11 @@ func FromEcowitt(d url.Values) (*Weather, error) {
 	}
 	var err error
 
-	time, err := time.Parse(timeformat, d.Get("dateutc"))
+	timeParse, err := time.Parse(timeformat, d.Get("dateutc"))
 	if err != nil {
 		return nil, err
 	}
-	w.Timestamp = time
+	w.Timestamp = timeParse
 
 	tempin, err := strconv.ParseFloat(d.Get("tempinf"), 32)
 	if err != nil {
