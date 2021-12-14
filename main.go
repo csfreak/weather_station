@@ -15,6 +15,8 @@ func main() {
 
 	http.HandleFunc("/v1/ecowitt", ecowittHandler)
 	http.HandleFunc("/v1/ecowitt/", ecowittHandler)
+	http.HandleFunc("/v1/stations", weather.RestGetHandler)
+	http.HandleFunc("/v1/stations/", weather.RestGetHandler)
 
 	http.Handle("/metrics", promhttp.Handler())
 
@@ -39,6 +41,7 @@ func ecowittHandler(res http.ResponseWriter, req *http.Request) {
 			log.Println(err)
 		} else {
 			weather.UpdateMetrics(w)
+			weather.UpdateStation(w, req.RemoteAddr)
 			res.WriteHeader(http.StatusOK)
 		}
 	}
