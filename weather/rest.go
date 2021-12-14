@@ -83,6 +83,9 @@ func RestGetHandler(res http.ResponseWriter, req *http.Request) {
 		}
 		res.Header().Set("Content-Type", "application/json")
 		res.WriteHeader(http.StatusOK)
-		json.NewEncoder(res).Encode(output)
+		err := json.NewEncoder(res).Encode(output)
+		if err != nil {
+			return
+		}
 	}
 }
