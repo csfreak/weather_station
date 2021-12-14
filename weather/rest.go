@@ -79,13 +79,13 @@ func RestGetHandler(res http.ResponseWriter, req *http.Request) {
 		var output JSONResponse
 		for _, station := range Stations {
 			output.Stations = append(output.Stations, weatherToJSON(station.LastData))
-
+		}
+		err := json.NewEncoder(res).Encode(output)
+		if err != nil {
+			res.WriteHeader(http.StatusInternalServerError)
+			return
 		}
 		res.Header().Set("Content-Type", "application/json")
 		res.WriteHeader(http.StatusOK)
-		err := json.NewEncoder(res).Encode(output)
-		if err != nil {
-			return
-		}
 	}
 }
