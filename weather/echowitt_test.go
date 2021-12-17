@@ -11,11 +11,11 @@ var (
 	good_post_data = "PASSKEY=TESTKEY&stationtype=TestStation&dateutc=2006-01-02+15:04:05&tempinf=65.7&humidityin=54&baromrelin=29.986&baromabsin=29.986&tempf=44.6&humidity=57&winddir=2&windspeedmph=1.1&windgustmph=1.1&rainratein=0.000&eventrainin=0.331&dailyrainin=0.331&weeklyrainin=0.343&monthlyrainin=0.343&yearlyrainin=0.343&totalrainin=0.343&solarradiation=0.100&uv=0&model=MODEL"
 	bad_post_data  = "PASSKEY=TESTKEY&stationtype=TestStation&dateutc=2006-01-02+15:04:05&tempinf=BADPARSE"
 	non_form_data  = "This isn't form data; This is a sentance."
-	path           = "/v1/echowhitt"
+	echowitt_path  = "/v1/echowhitt"
 )
 
 func TestEchowittHandler_implements_http_handler(t *testing.T) {
-	req := httptest.NewRequest(http.MethodPost, path, nil)
+	req := httptest.NewRequest(http.MethodPost, echowitt_path, nil)
 	resp := httptest.NewRecorder()
 
 	// Call EchowittHandler
@@ -25,7 +25,7 @@ func TestEchowittHandler_implements_http_handler(t *testing.T) {
 }
 
 func TestEchowittHandler_valid_data_parse(t *testing.T) {
-	req := httptest.NewRequest(http.MethodPost, path, strings.NewReader(good_post_data))
+	req := httptest.NewRequest(http.MethodPost, echowitt_path, strings.NewReader(good_post_data))
 	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 	resp := httptest.NewRecorder()
 
@@ -38,7 +38,7 @@ func TestEchowittHandler_valid_data_parse(t *testing.T) {
 	}
 }
 func TestEchowittHandler_invalid_data_parse(t *testing.T) {
-	req := httptest.NewRequest(http.MethodPost, path, strings.NewReader(bad_post_data))
+	req := httptest.NewRequest(http.MethodPost, echowitt_path, strings.NewReader(bad_post_data))
 	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 	resp := httptest.NewRecorder()
 
@@ -52,7 +52,7 @@ func TestEchowittHandler_invalid_data_parse(t *testing.T) {
 }
 
 func TestEchowittHandler_invalid_form_parse(t *testing.T) {
-	req := httptest.NewRequest(http.MethodPost, path, strings.NewReader(non_form_data))
+	req := httptest.NewRequest(http.MethodPost, echowitt_path, strings.NewReader(non_form_data))
 	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 	resp := httptest.NewRecorder()
 
@@ -66,7 +66,7 @@ func TestEchowittHandler_invalid_form_parse(t *testing.T) {
 }
 
 func TestEchowittHandler_invalid_method(t *testing.T) {
-	req := httptest.NewRequest(http.MethodGet, path, nil)
+	req := httptest.NewRequest(http.MethodGet, echowitt_path, nil)
 	resp := httptest.NewRecorder()
 
 	// Call EchowittHandler
