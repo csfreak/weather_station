@@ -36,16 +36,17 @@ func RestGetHandler(res http.ResponseWriter, req *http.Request) {
 	if !(req.Method == http.MethodGet) {
 		res.WriteHeader(http.StatusMethodNotAllowed)
 	} else {
-		var stationdata []Weather
+		var outdata []Weather
 		for _, station := range Stations {
-			stationdata = append(stationdata, station.LastData)
+			outdata = append(outdata, station.LastData)
 		}
-		err := json.NewEncoder(res).Encode(stationdata)
+		out, err := json.Marshal(outdata)
 		if err != nil {
 			res.WriteHeader(http.StatusInternalServerError)
 			return
 		}
 		res.Header().Set("Content-Type", "application/json")
 		res.WriteHeader(http.StatusOK)
+		res.Write(out)
 	}
 }
