@@ -93,6 +93,7 @@ func EcowittHandler(res http.ResponseWriter, req *http.Request) {
 		parseErr := req.ParseForm()
 		if parseErr != nil {
 			log.Println(parseErr)
+			res.WriteHeader(http.StatusInternalServerError)
 			return
 		}
 		w, err := fromEcowitt(req.PostForm)
