@@ -101,8 +101,13 @@ func EcowittHandler(res http.ResponseWriter, req *http.Request) {
 			res.WriteHeader(http.StatusInternalServerError)
 			log.Println(err)
 		} else {
+			remote := req.RemoteAddr
+			if xffh := req.Header.Get("X-Forwarded-For"); xffh != "" {
+				remote = xffh
+			}
+			log.Printf("Processed Data for %s from %s", w.StationType+" "+w.Model, remote)
 			UpdateMetrics(w)
-			UpdateStation(w, req.RemoteAddr)
+			UpdateStation(w, remote)
 			res.WriteHeader(http.StatusOK)
 		}
 	}

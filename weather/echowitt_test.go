@@ -77,3 +77,20 @@ func TestEchowittHandler_invalid_method(t *testing.T) {
 		t.Errorf("expected status code %d, got %d", http.StatusMethodNotAllowed, result.StatusCode)
 	}
 }
+
+func TestEchowittHandler_xff(t *testing.T) {
+	Stations = nil
+	req := httptest.NewRequest(http.MethodPost, echowitt_path, strings.NewReader(good_post_data))
+	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
+	req.Header.Add("X-Forwarded-For", test_host_2)
+	resp := httptest.NewRecorder()
+
+	// Call EchowittHandler
+	EcowittHandler(resp, req)
+	result := resp.Result()
+	defer result.Body.Close()
+
+	if Stations[0].Host != test_host_2 {
+		t.Error("found wrong host, expected ", test_host_2, " found ", Stations[0].Host)
+	}
+}
